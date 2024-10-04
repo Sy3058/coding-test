@@ -3,7 +3,7 @@ dp = [1]
 i = 1
 temp = 1
 
-while temp <= 4294967295:
+while temp <= s:
   if len(dp)%2 == 1:
     temp = i * (2*i + 1)
     dp.append(temp)
@@ -12,6 +12,4 @@ while temp <= 4294967295:
     dp.append(temp)
     i += 1
 
-for i in range (1, len(dp)):
-  if dp[i-1] <= s < dp[i]:
-    print(i)
+print(len(dp)-1)
