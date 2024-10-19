@@ -12,7 +12,7 @@ for _ in range (n):
     boys[y-1] += 1
 
 for i in range (6):
-  girls[i] = math.ceil(girls[i]/2) # 한 명만 있어도 방을 배정해야 하므로 올림
-  boys[i] = math.ceil(boys[i]/2)
+  girls[i] = math.ceil(girls[i]/k) # 한 명만 있어도 방을 배정해야 하므로 올림
+  boys[i] = math.ceil(boys[i]/k)
 
 print(sum(girls)+sum(boys))
