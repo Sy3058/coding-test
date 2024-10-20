@@ -9,13 +9,19 @@ rank = sorted(medals.items(), key = lambda x: (x[1][0], x[1][1], x[1][2]), rever
 
 ranking = 1
 tmp = 1 # 메달 수가 동일한 국가의 수
-for i in range (1, N):
-  if rank[i][1] == rank[i-1][1]: # 앞의 국가와 메달이 동일할 때
-    tmp += 1
-  else: # 다를 때
-    ranking += tmp
-    tmp = 1 # 메달 수가 동일한 국가의 수 초기화
-  if rank[i][0] == K:
-    break
+ranking_list = [1]
 
-print(ranking)
+if rank[0][0] == K:
+  print(1)
+else:
+  for i in range (1, N):
+    if rank[i][1] == rank[i-1][1]: # 앞의 국가와 메달이 동일할 때
+      tmp += 1
+    else: # 다를 때
+      ranking += tmp
+      tmp = 1 # 메달 수가 동일한 국가의 수 초기화
+    ranking_list.append(ranking)
+    if rank[i][0] == K:
+      print(ranking)
+      break
+
