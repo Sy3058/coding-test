@@ -1,13 +1,11 @@
 import sys
 
-students = set([i for i in range (1, 31)])
-check = []
+students = []
+
 for _ in range (28):
   s = int(sys.stdin.readline())
-  check.append(s)
+  students.append(s)
 
-check = set(check)
-missing = list(students - check)
-
-print(min(missing))
-print(max(missing))
+for i in range (1, 31):
+  if i not in students:
+    print(i)
