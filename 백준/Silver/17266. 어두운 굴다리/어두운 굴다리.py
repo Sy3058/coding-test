@@ -3,7 +3,7 @@ import math
 
 n = int(sys.stdin.readline())
 m = int(sys.stdin.readline())
-x_li = list(map(int, sys.stdin.readline().split()))
+x_li = tuple(map(int, sys.stdin.readline().split()))
 
 mlen = 0
 left = x_li[0] - 0
