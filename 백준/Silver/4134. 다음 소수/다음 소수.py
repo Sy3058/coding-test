@@ -1,11 +1,17 @@
 import sys
 input = sys.stdin.readline
 
-def is_prime(x):
-  for i in range(2, int(x**0.5) + 1): # 제곱근까지만 확인하면 됨
-    if x % i == 0:
+def is_prime(x): # 밀러-라빈 알고리즘
+  if n <= 3:
+    return True
+  if n % 2 == 0 or n % 3 == 0:
+    return False
+  i = 5
+  while i * i <= n:
+    if n % i == 0 or n % (i + 2) == 0:
       return False
-  return True # 나누어떨어지지 않았을 경우 소수
+    i += 6
+  return True
 
 t = int(input()) # test case
 
