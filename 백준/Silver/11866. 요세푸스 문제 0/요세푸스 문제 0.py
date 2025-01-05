@@ -11,7 +11,4 @@ while num:
   order.append(num.popleft())
 
 print('<', end = '')
-for i in range (n-1):
-  print(order[i], end=', ')
-print(order[-1], end = '')
-print('>')
+print(', '.join(map(str, order)), end='>')
