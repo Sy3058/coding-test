@@ -10,17 +10,17 @@ for _ in range (t):
   flag = False
   
   imp.sort(reverse=True)
-  for i in range (n):
-    for j in range (len(doc)):
-      if doc[j][1] == imp[i]:
-        if doc[j][0] == m:
-          ans = i + 1
-          flag = True
+
+  def printer():
+    for i in range (n):
+      for j in range (len(doc)):
+        if doc[j][1] == imp[i]:
+          if doc[j][0] == m:
+            ans = i + 1
+            return ans
+          doc.rotate(-j)
+          doc.popleft()
           break
-        doc.rotate(-j)
-        doc.popleft()
-        break
-    if flag:
-      break
   
+  ans = printer()
   print(ans)
