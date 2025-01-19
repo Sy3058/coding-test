@@ -6,7 +6,7 @@ for _ in range (t):
   x, y = map(int, input().split())
   dis = y - x
   n = int(dis ** 0.5)
-  while n**2 + n > dis:
+  if n**2 + n > dis:
     n -= 1
 
   rest = dis - (n**2 + n)
