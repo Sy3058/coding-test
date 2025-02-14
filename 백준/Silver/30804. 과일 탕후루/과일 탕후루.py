@@ -4,7 +4,7 @@ input = sys.stdin.readline
 n = int(input())
 s = list(map(int, input().split()))
 
-def count_fruit():
+def count_fruit(n, s):
   cnt = 0
   l = 0
   fc = {} # 과일의 개수
@@ -25,4 +25,4 @@ def count_fruit():
 if len(set(s)) <= 2:
   print(n)
 else:
-  print(count_fruit())
+  print(count_fruit(n, s))
