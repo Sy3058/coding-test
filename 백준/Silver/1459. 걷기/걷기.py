@@ -1,6 +1,3 @@
-import sys
-input = sys.stdin.readline
-
 x, y, w, s = map(int, input().split())
 if x < y: x, y = y, x
 
