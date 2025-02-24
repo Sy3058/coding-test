@@ -2,44 +2,45 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 
-n = int(input()) # 보드의 크기
-k = int(input()) # 사과의 개수
-apple = set([tuple(map(int, input().split())) for _ in range (k)]) # 사과의 위치
-l = int(input()) # 뱀의 방향 변환 횟수
-red = [tuple(input().split()) for _ in range (l)] # 방향 변환 정보
+n = int(input())  # 보드 크기
+k = int(input())  # 사과 개수
+apple = set(tuple(map(int, input().split())) for _ in range(k))  # 사과 위치
+l = int(input())  # 방향 변환 개수
+red = {int(x): c for x, c in (input().split() for _ in range(l))}  # 방향 변환을 dict 형태로 저장
 
-board = [[False]*(n+1) for _ in range (n+1)]
-snake = deque([(1, 1)])
-d = [0, 1] # 현재 방향
-cnt = 0 # 시간
-i = 0 # 방향 변환 확인
-
-def change_direction(d): # 방향 전환
-  if d[0] == 0:
-    if red[i][1] == 'L': d[0], d[1] = -d[1], d[0]
-    else: d[0], d[1] = d[1], d[0]
-  else:
-    if red[i][1] == 'L': d[0], d[1] = d[1], d[0]
-    else: d[0], d[1] = d[1], -d[0]
+# 방향 벡터 (시계 방향)
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+direction = 0  # 초기 방향 (오른쪽)
+snake = deque([(1, 1)])  # 뱀의 위치
+snake_positions = set(snake)  # 현재 뱀의 몸 위치를 set으로 관리
+cnt = 0  # 시간
 
 while True:
-  cnt += 1
-  x, y = snake[-1]
-  nx, ny = x+d[0], y+d[1]
-  if 1 <= nx <= n and 1 <= ny <= n and not board[nx][ny]:
-    board[nx][ny] = True # 이동한 위치
+    cnt += 1
+    x, y = snake[-1]
+    dx, dy = directions[direction]
+    nx, ny = x + dx, y + dy
+
+    # 벽에 부딪히거나 자기 자신과 부딪히면 종료
+    if not (1 <= nx <= n and 1 <= ny <= n) or (nx, ny) in snake_positions:
+        break
+
+    # 이동
     snake.append((nx, ny))
-    if (nx, ny) not in apple: # 사과를 먹지 못하면 꼬리 이동
-      lx, ly = snake.popleft()
-      board[lx][ly] = False
-    else: # 사과를 먹었다면 제거 
-      apple.remove((nx, ny))
+    snake_positions.add((nx, ny))
 
-  else:
-    break
+    # 사과가 없으면 꼬리 제거
+    if (nx, ny) not in apple:
+        tail_x, tail_y = snake.popleft()
+        snake_positions.remove((tail_x, tail_y))
+    else:
+        apple.remove((nx, ny))  # 사과 제거
 
-  if i < len(red) and cnt == int(red[i][0]): # 방향 변환
-    change_direction(d)
-    i += 1
+    # 방향 변환
+    if cnt in red:
+        if red[cnt] == 'L':  # 반시계 방향 회전
+            direction = (direction - 1) % 4
+        else:  # 시계 방향 회전
+            direction = (direction + 1) % 4
 
 print(cnt)
