@@ -3,14 +3,14 @@ input = sys.stdin.readline
 
 word = input().strip()
 bomb = list(input().strip())
+
 stack = []
-sb = set(bomb)
+n, k = len(bomb), bomb[-1]
 
 for i in range (len(word)):
   stack.append(word[i])
   
-  while len(stack) >= len(bomb) and stack[-len(bomb):] == bomb:
-    for _ in range (len(bomb)):
-      stack.pop()
+  if word[i] == k and stack[-n:] == bomb:
+    del stack[-n:]
 
 print(''.join(stack)) if stack else print('FRULA')
