@@ -3,17 +3,12 @@ from collections import deque
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
-ladder = {} # move from x to y (upward)
-snake = {} # move from u to v (downward)
+move = {}
 dp = [0] * (101)
 
-for _ in range (n):
-  x, y = map(int, input().split()) # x to y
-  ladder[x] = y
-
-for _ in range (m):
-  u, v = map(int, input().split())
-  snake[u] = v
+for _ in range (n+m):
+  s, e = map(int, input().split()) # x to y
+  move[s] = e
 
 def bfs():
   nv = deque([(1, 0)]) # position, count
@@ -27,17 +22,19 @@ def bfs():
       np = p + d # next position
 
       if np == 100:
-        return cnt+1
+        return cnt + 1
+
+      if np > 100:
+        continue
+
+      if np in move:
+        np = move[np]
       
-      if np < 100 and dp[np] == 0: # not visited and np in board
-        if np in ladder:
-          np = ladder[np]
-        
-        elif np in snake:
-          np = snake[np]
-        
-        nv.append((np, cnt+1))
-        dp[np] = cnt
+      if dp[np] != 0:
+        continue
+
+      nv.append((np, cnt+1))
+      dp[np] = cnt + 1
 
 
 print(bfs())
