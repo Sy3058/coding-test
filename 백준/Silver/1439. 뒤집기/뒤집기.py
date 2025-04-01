@@ -2,11 +2,7 @@ import sys
 input = sys.stdin.readline
 
 s = input().strip()
-nds = [s[0]]
+z = [x for x in s.split('1') if x != ''] # 문자열을 1로 분할하면 0만 남은 리스트가 생김 그중에서 ''가 아닌 값만 리스트로 만들면 0으로 시작하는 부분들만 남음
+o = [x for x in s.split('0') if x != '']
 
-for i in range (1, len(s)):
-  if s[i] != s[i-1]:
-    nds.append(s[i])
-
-ans = min(nds.count('0'), nds.count('1'))
-print(ans)
+print(min(len(z), len(o)))
