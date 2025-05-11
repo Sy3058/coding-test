@@ -1,12 +1,8 @@
 import sys
+import math
 input = sys.stdin.readline
 
 t = int(input())
-
-def gcd(a, b): # 최대 공약수 구하는 방법
-  while b > 0:
-    a, b = b, a % b
-  return a
 
 for _ in range (t):
   data = input().split()
@@ -15,6 +11,6 @@ for _ in range (t):
 
   for i in range (n):
     for j in range (i + 1, n):
-      hap += gcd(arr[i], arr[j])
+      hap += math.gcd(arr[i], arr[j])
   
   print(hap)
