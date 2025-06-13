@@ -8,24 +8,27 @@ dp = [0] * (n+1)
 
 for _ in range (m):
   a, b = map(int, input().split())
-  comp[a].append(b)
+  comp[b].append(a)
 
 def bfs(s):
   nv = deque([s])
+  cnt = 0
   visited[s] = 1
 
   while nv:
     x = nv.popleft()
-
+    cnt += 1
     for i in comp[x]:
       if not visited[i]:
-        visited[i] = 1
         nv.append(i)
-        dp[i] += 1
+        visited[i] = 1
+  
+  return cnt
+
 
 for i in range (1, n+1):
   visited = [0] * (n+1)
-  bfs(i)
+  dp[i] = bfs(i)
 
 mv = max(dp)
 
