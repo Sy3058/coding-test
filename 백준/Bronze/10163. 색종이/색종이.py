@@ -18,10 +18,9 @@ for k in range (1, n+1):
     for j in range (b, b+h):
       board[i][j] = k
 
-# board에서 num을 찾아서 개수를 추가
-for row in board:
-  for num in row:
-    area[num] = area.get(num, 0) + 1
+for num in range (1, n+1):
+  cnt = 0
+  for row in range (1001):
+    cnt += board[row].count(num)
 
-for i in range (1, n+1):
-  print(area[i])
+  print(cnt)
