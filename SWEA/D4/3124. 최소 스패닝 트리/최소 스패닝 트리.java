@@ -2,38 +2,19 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-    static int [] parent;
-
-    static int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]);
-        }
-        return parent[x];
-    }
-
-    static boolean union(int a, int b) {
-        int rootA = find(a);
-        int rootB = find(b);
-
-        if (rootA != rootB) {
-            parent[rootB] = rootA;
-            return true;
-        }
-        return false;
-    }
 
     static class Edge implements Comparable<Edge> {
-        int A, B, C; // 두 노드, 간선 비용
+        int to;
+        int cost;
 
-        public Edge (int A, int B, int C) {
-            this.A = A;
-            this.B = B;
-            this.C = C; // cost
+        public Edge(int to, int cost) {
+            this.to = to;
+            this.cost = cost;
         }
 
         @Override
         public int compareTo(Edge other) {
-            return Integer.compare(this.C, other.C);
+            return Integer.compare(this.cost, other.cost);
         }
         
     }
@@ -47,13 +28,11 @@ public class Solution {
             int V = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
 
-            // 초기화
-            parent = new int[V+1];
-            for (int i = 0; i <= V; i++)
-                parent[i] = i;
-
-            // 간선 리스트 생성
-            List<Edge> edges = new ArrayList<>();
+            // 인접 리스트 그래프 생성 및 초기화
+            List<Edge>[] graph = new ArrayList[V + 1];
+            for (int i = 1; i <= V; i++) {
+                graph[i] = new ArrayList<>();
+            }
 
             for (int i = 0; i < E; i++) {
                 st = new StringTokenizer(br.readLine());
@@ -61,20 +40,31 @@ public class Solution {
                 int A = Integer.parseInt(st.nextToken());
                 int B = Integer.parseInt(st.nextToken());
                 int C = Integer.parseInt(st.nextToken());
-                edges.add(new Edge(A, B, C));
+                
+                graph[A].add(new Edge(B, C));
+                graph[B].add(new Edge(A, C)); // 무향 그래프이므로 둘 다 추가
             }
 
-            // 간선비용 기준 정렬
-            Collections.sort(edges);
-
+            // 프림 알고리즘
+            boolean [] visited = new boolean[V + 1];
+            PriorityQueue<Edge> nv = new PriorityQueue<>();
+            nv.add(new Edge(1, 0)); // 1번 정점을 임의의 시작점으로 지정
             long totalCost = 0;
-            int cnt = 0; // 간선 선택 개수
-            for (Edge e : edges) {
-                if (union(e.A, e.B)) {
-                    totalCost += e.C;
-                    cnt++;
-                    if (cnt == V - 1)
-                        break;
+            int cnt = 0;
+
+            // cnt가 V가 되면 종료
+            while (!nv.isEmpty() && cnt < V) {
+                Edge cur = nv.poll();
+                if (visited[cur.to]) continue;
+
+                visited[cur.to] = true;
+                totalCost += cur.cost;
+                cnt++;
+
+                for (Edge nxt : graph[cur.to]) {
+                    if (!visited[nxt.to]) {
+                        nv.add(nxt);
+                    }
                 }
             }
             sb.append("#").append(tc).append(" ").append(totalCost).append("\n");
