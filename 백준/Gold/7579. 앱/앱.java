@@ -11,7 +11,7 @@ public class Main {
 	static int t, n, m;
 	static int[] A = new int[101];
 	static int[] C = new int[101];
-	static int[][] dp = new int[101][10001];
+	static int[] dp = new int[10001];
 	static int ans = 0;
 
 	public static void main(String[] args) throws Exception {
@@ -33,14 +33,13 @@ public class Main {
 
 			// logic
 			for (int i = 1; i <= n; i++) {
-				for (int j = 0; j <= 10000; j++) {
-					dp[i][j] = dp[i - 1][j];
-					if (j - C[i] >= 0) dp[i][j] = Math.max(dp[i][j],  dp[i - 1][j - C[i]] + A[i]);
+				for (int j = 10000; j >= 0; j--) {
+					if (j - C[i] >= 0) dp[j] = Math.max(dp[j],  dp[j - C[i]] + A[i]);
 				}
 			}
 			
 			for (int i = 0; i <= 10000; i++)
-				if (dp[n][i] >= m) {
+				if (dp[i] >= m) {
 					ans = i;
 					break;
 				}
