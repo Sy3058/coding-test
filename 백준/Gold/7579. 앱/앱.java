@@ -1,55 +1,51 @@
-import java.util.*;
-import java.util.List;
 import java.io.*;
-import java.awt.*;
+import java.util.*;
 
 public class Main {
+  static int N, M, total_cost;
+  static int [] memories;
+  static int [] costs;
+  static int [] dp;
+  
+  public static void main (String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-	static StringTokenizer st;
-	static int t, n, m;
-	static int[] A = new int[101];
-	static int[] C = new int[101];
-	static int[] dp = new int[10001];
-	static int ans = 0;
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    N = Integer.parseInt(st.nextToken());
+    M = Integer.parseInt(st.nextToken());
 
-	public static void main(String[] args) throws Exception {
+    memories = new int [N];
+    costs = new int [N];
 
-		t = 1;
-		for (int tc = 1; tc <= t; tc++) {
+    StringTokenizer stm = new StringTokenizer(br.readLine());
+    StringTokenizer stc = new StringTokenizer(br.readLine());
 
-			// init
+    for (int i = 0; i < N; i++) {
+      memories[i] = Integer.parseInt(stm.nextToken());
+      costs[i] = Integer.parseInt(stc.nextToken());
+      total_cost += costs[i];
+    }
+    
+    dp = new int [total_cost + 1];
 
-			// input
-			st = new StringTokenizer(br.readLine());
-			n = Integer.parseInt(st.nextToken());
-			m = Integer.parseInt(st.nextToken());
-			
-			st = new StringTokenizer(br.readLine());
-			for (int i = 1; i <= n; i++) A[i] = Integer.parseInt(st.nextToken());
-			st = new StringTokenizer(br.readLine());
-			for (int i = 1; i <= n; i++) C[i] = Integer.parseInt(st.nextToken());
+    // 각 앱을 순회하면서 dp 테이블 갱신
+    for (int i = 0; i < N; i++) {
+      int m = memories[i];
+      int c = costs[i];
 
-			// logic
-			for (int i = 1; i <= n; i++) {
-				for (int j = 10000; j >= 0; j--) {
-					if (j - C[i] >= 0) dp[j] = Math.max(dp[j],  dp[j - C[i]] + A[i]);
-				}
-			}
-			
-			for (int i = 0; i <= 10000; i++)
-				if (dp[i] >= m) {
-					ans = i;
-					break;
-				}
+      // 뒤에서부터 순회하며 중복 방지
+      for (int j = total_cost; j >= c; j--) {
+        // 현재 앱을 비활성화하는 경우와 활성화하는 경우 중 더 큰 메모리 선택
+        dp[j] = Math.max(dp[j], dp[j - c] + m);
+      }
+    }
 
-			// output
-//			bw.append("#").append(Integer.toString(tc)).append(" ");
-			bw.append(Integer.toString(ans));
-//			bw.append("\n");
-			bw.flush();
-		}
-
-	}
+    // 최소 메모리 M을 만족하는 가장 작은 코스트 찾기
+    for (int j = 0; j <= total_cost; j++) {
+      if (dp[j] >= M) {
+        System.out.println(j);
+        break;
+      }
+    }
+  }
 }
