@@ -29,5 +29,4 @@
 - **이유:**
 permutation이 9!만큼 돌아감. 상수에 해당하므로 O(1)
 
-
 > 출처: SW Expert Academy, https://swexpertacademy.com/main/code/problem/problemList.do
