@@ -1,27 +1,26 @@
-from collections import deque
+import sys
+input = sys.stdin.readline
 
 for tc in range (1, int(input()) + 1):
   n = int(input())
   house = tuple(map(int, input().split()))
-  shop = [tuple(map(int, input().split())) for _ in range (n+1)]
-  dest = shop[-1]
+  shop = [tuple(map(int, input().split())) for _ in range (n)]
+  dest = tuple(map(int, input().split()))
   visited = [False] * (n + 1)
 
-  def bfs(start):
-    nv = deque([start])
+  def dfs(start):
+    x, y = start
 
-    while nv:
-      x, y = nv.popleft()
+    if abs(x - dest[0]) + abs(y - dest[1]) <= 1000:
+      return True
 
-      for i in range (n + 1):
+    for i in range (n):
+      if not visited[i]:
         nx, ny = shop[i]
-        
-        if not visited[i]:
-          if abs(nx - x) + abs(ny - y) <= 1000:
-            if (nx, ny) == dest:
-              return "happy"
-            visited[i] = True
-            nv.append((nx, ny))
-    return "sad"
+        if abs(nx - x) + abs(ny - y) <= 1000:
+          visited[i] = True
+          if dfs((nx, ny)):
+            return True
+    return False
   
-  print(bfs(house))
+  print('happy' if dfs(house) else 'sad')
