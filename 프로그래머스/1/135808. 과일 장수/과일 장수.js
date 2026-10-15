@@ -3,7 +3,7 @@ function solution(k, m, score) {
     
     score.sort((a, b) => b - a); // 내림차순
     
-    n = score.length;
+    const n = score.length;
     
     // 상자에 들어가는 사과의 수보다 사과 개수가 적으면 팔 수 없음
     if (n < m) {
