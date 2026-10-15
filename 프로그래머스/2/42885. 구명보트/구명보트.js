@@ -6,15 +6,14 @@ function solution(people, limit) {
     let right = people.length - 1;
     
     while (left <= right) {
-        // 구명보트의 무게제한보다 몸무게가 적으면 하나에 두 명 태울 수 있음
-        if (people[left] + people[right] <= limit) {
-            answer++;
-            left++;
+        // 가벼운 사람도 함께 태울 수 있으면 태우고 출발
+        if (left < right && people[left] + people[right] <= limit) {
             right--;
-        } else {
-            answer++; // 무거운 사람은 혼자 태워야함
-            left++; // 무거운 사람의 무게가 줄어드는 방향으로 가야함
         }
+        
+        // 어떤 경우에도 무거운 사람은 보트를 타고 출발함
+        answer++;
+        left++;
     }
     return answer;
 }
